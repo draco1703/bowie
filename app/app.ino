@@ -13,6 +13,7 @@ void loop() {
 		wheels.advance(128); /* 0 - 255 */
 	} else {
 		wheels.stop();
+		delay(250);
 		wheels.turnLeft(128);
 
 		/* turn 180 degrees right if left wall is blocked */
