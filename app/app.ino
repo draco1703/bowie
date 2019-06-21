@@ -8,8 +8,11 @@ Usens centerEye;
 Mov legs;
 
 /* 0=open space;1=wall;2=exit */
-char* maze = "1121111011110111101111011";
+char maze[] = "1121111011110111101111011";
 const int width = 5;
+
+/* forward, backwards, left, right */
+int compass[4] = {-width, width, -1, 1};
 
 /* inital pos of robot */
 int pos = 21;
@@ -19,8 +22,6 @@ int turnCount = 0;
 
 void setup() {
 	Serial.begin(9600);
-
-	printMaze();
 }
 
 /* prints maze in serial monitor */
