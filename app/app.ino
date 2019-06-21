@@ -36,8 +36,10 @@ void loop() {
 			heading = 0;
 		}
 		
-		if(turnCount == 0 && heading == 0 && eyes.isBlocked(maze, pos, compass[0]) == false){
-			legs.advance(pos, compass);
+		if(turnCount == 0 && heading == 0 && eyeFront.isBlocked(20) == false){
+			wheels.advance(128);
+			delay(500);
+			wheels.stop();
 		} else {
 			wallFollow();
 		}
@@ -45,17 +47,23 @@ void loop() {
 }
 
 void wallFollow(){
-		if(eyes.isBlocked(maze, pos, compass[3]) == false){
+		if(eyeRight.isBlocked(20) == false){
 			turnCount++;
 			heading += 90;
-			legs.turnRight(compass);
+			wheels.turnRight(128);
+			delay(250);
+			wheels.stop();
 		}
 		
-		if(eyes.isBlocked(maze, pos, compass[0]) == false){
-			legs.advance(pos, compass);
+		if(eyeFront.isBlocked(20) == false){
+			wheels.advance(128);
+			delay(500);
+			wheels.stop();
 		} else {
 			turnCount--;
 			heading -= 90;
-			legs.turnLeft(compass);
+			wheels.turnLeft(128);
+			delay(250);
+			wheels.stop();
 		}
 }
