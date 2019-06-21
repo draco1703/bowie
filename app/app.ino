@@ -3,18 +3,6 @@
 #include <Arduino.h>
 #include <string.h>
 
-/* 0=nothing;1=wall;E=exit */
-/*G maze to demonstrate Pledge*/
-//char maze[] = "000000000000000111111000000100000000000101111000000100001000000111111000E00000000000";
-//const int width = 12;
-
-/* bigmaze */
-char maze[] = "1E1111111111111111111100000100000000000001101110111010101110101101000001010100010101111010111011111111101100010001010000010001111011101110111110101101000100000100000101101111101111111011101100010001000000000101101111101010111010101100000000010001010101111010101010111011101101010101010001010101101010101011101010101100010101010101010101111010111110111010101100010100010001010101101110111010101110101100010000000100010001111111111111111111111";
-const int width = 21;
-
-/* forward, backwards, left, right */
-int compass[] = {-width, width, -1, 1};
-
 /* inital pos of robot */
 int pos;
 
@@ -29,9 +17,45 @@ int moveCounter;
 Usens eyes;
 Mov legs;
 
+/* 
+	DEMO MAZES
+
+	0 = nothing
+	1 = wall
+	E = exit 
+*/
+
+/* simple maze */
+char maze[] = "11E111001110111100111101111111";
+const int width = 5;
+
+/* big maze */
+//char maze[] = "1E1111111111111111111100000100000000000001101110111010101110101101000001010100010101111010111011111111101100010001010000010001111011101110111110101101000100000100000101101111101111111011101100010001000000000101101111101010111010101100000000010001010101111010101010111011101101010101010001010101101010101011101010101100010101010101010101111010111110111010101100010100010001010101101110111010101110101100010000000100010001111111111111111111111";
+//const int width = 21;
+//pos = 402;
+//legs.turnLeft(compass);
+
+/* medium maze */
+//char maze[] = "1011111111111111111111010001000101000001011010101011101011101011010101000100010000011011101011111110111011000000000000000100011111111111111111111E1";
+//const int width = 21;
+//pos = 1;
+//legs.turnLeft(compass);
+//legs.turnLeft(compass);
+
+/*G-shaped maze to demonstrate Pledge*/
+//char maze[] = "000000000000000111111000000100000000000101111000000100001000000111111000E00000000000";
+//const int width = 12;
+//pos = 37;
+//legs.turnLeft(compass);
+
+/* forward, backwards, left, right */
+int compass[] = {-width, width, -1, 1};
+
 void setup() {
 	Serial.begin(9600);
-	pos = 402;
+	
+	pos = 22;
+
 	turnCount = 0;
 	origHeading = compass[0];
 	moveCounter = 0;
@@ -46,7 +70,8 @@ void printMaze(){
 		if(i == pos) {
 			Serial.print("@");
 		} else if(maze[i] == '1'){
-			Serial.print("▓");
+			Serial.print("█");
+			//Serial.print("#");
 		} else if (maze[i] == '0'){
 			Serial.print(" ");
 		} else {
@@ -68,6 +93,8 @@ void loop() {
 	Serial.print("facing: ");
 	Serial.println(compass[0]);
 */
+	//printMaze();
+
 	if(maze[pos] == 'E'){
 		Serial.print("Escaped in ");
 		Serial.print(moveCounter);
@@ -81,7 +108,6 @@ void loop() {
 		if(turnCount == 0 && compass[0] == origHeading && eyes.isBlocked(maze, pos, compass[0]) == false){
 			legs.advance(pos, compass);
 			origHeading = compass[0];
-			//printMaze();
 		} else {
 			wallFollow();
 		}
