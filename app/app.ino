@@ -15,9 +15,11 @@ void loop() {
 		wheels.turnRight(128);
 		delay(250);
 		wheels.stop();
-	} else if(eyeFront.isBlocked(20) == false) {
+	}
+	
+	if(eyeFront.isBlocked(20) == false) {
 		wheels.advance(128);
-		delay(250);
+		delay(500);
 		wheels.stop();
 	} else {
 		wheels.turnLeft(128);
