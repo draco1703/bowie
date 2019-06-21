@@ -8,7 +8,7 @@ int pos;
 
 /* stuff for pledge algo */
 int turnCount;
-int origHeading;
+int heading;
 
 /* counts amount of moves it machine takes */
 int moveCounter;
@@ -26,8 +26,9 @@ Mov legs;
 */
 
 /* simple maze */
-char maze[] = "11E111001110111100111101111111";
-const int width = 5;
+//char maze[] = "11E111001110111100111101111111";
+//const int width = 5;
+//pos = 22;
 
 /* big maze */
 //char maze[] = "1E1111111111111111111100000100000000000001101110111010101110101101000001010100010101111010111011111111101100010001010000010001111011101110111110101101000100000100000101101111101111111011101100010001000000000101101111101010111010101100000000010001010101111010101010111011101101010101010001010101101010101011101010101100010101010101010101111010111110111010101100010100010001010101101110111010101110101100010000000100010001111111111111111111111";
@@ -43,10 +44,8 @@ const int width = 5;
 //legs.turnLeft(compass);
 
 /*G-shaped maze to demonstrate Pledge*/
-//char maze[] = "000000000000000111111000000100000000000101111000000100001000000111111000E00000000000";
-//const int width = 12;
-//pos = 37;
-//legs.turnLeft(compass);
+char maze[] = "000000000000000111111000000100000000000101111000000100001000000111111000E00000000000";
+const int width = 12;
 
 /* forward, backwards, left, right */
 int compass[] = {-width, width, -1, 1};
@@ -54,10 +53,10 @@ int compass[] = {-width, width, -1, 1};
 void setup() {
 	Serial.begin(9600);
 	
-	pos = 22;
+	pos = 34;
+	legs.turnLeft(compass);
 
 	turnCount = 0;
-	origHeading = compass[0];
 	moveCounter = 0;
 }
 /* prints maze in serial monitor */
@@ -70,7 +69,7 @@ void printMaze(){
 		if(i == pos) {
 			Serial.print("@");
 		} else if(maze[i] == '1'){
-			Serial.print("█");
+			Serial.print("▓");
 			//Serial.print("#");
 		} else if (maze[i] == '0'){
 			Serial.print(" ");
@@ -105,9 +104,14 @@ void loop() {
 	} else {
 		moveCounter++;
 		
-		if(turnCount == 0 && compass[0] == origHeading && eyes.isBlocked(maze, pos, compass[0]) == false){
+		/* ! might be unneeded ! */
+		/* reset heading on full rotation */
+		if(heading == 360 || heading == -360){
+			heading = 0;
+		}
+
+		if(turnCount == 0 && heading == 0 && eyes.isBlocked(maze, pos, compass[0]) == false){
 			legs.advance(pos, compass);
-			origHeading = compass[0];
 		} else {
 			wallFollow();
 		}
@@ -117,6 +121,7 @@ void loop() {
 void wallFollow(){
 		if(eyes.isBlocked(maze, pos, compass[3]) == false){
 			turnCount++;
+			heading += 90;
 			legs.turnRight(compass);
 		}
 		
@@ -124,6 +129,7 @@ void wallFollow(){
 			legs.advance(pos, compass);
 		} else {
 			turnCount--;
+			heading -= 90;
 			legs.turnLeft(compass);
 		}
 }
