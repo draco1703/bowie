@@ -1,7 +1,9 @@
 #include <usenslib.h>
 #include <movlib.h>
 
-Usens eyes(12, 13);
+Usens eyeRight(12, 13);
+Usens eyeFront(2, 3);
+
 Mov wheels(4, 5, 6, 7, 8, 9);
 
 void setup() {
@@ -9,17 +11,17 @@ void setup() {
 }
 
 void loop() {
-	if(eyes.isBlocked(5) == false){
-		wheels.advance(128); /* 0 - 255 */
-	} else {
-		wheels.stop();
+	if(eyeRight.isBlocked(20) == false){
+		wheels.turnRight(128);
 		delay(250);
+		wheels.stop();
+	} else if(eyeFront.isBlocked(20) == false) {
+		wheels.advance(128);
+		delay(250);
+		wheels.stop();
+	} else {
 		wheels.turnLeft(128);
-
-		/* turn 180 degrees right if left wall is blocked */
-		if(eyes.isBlocked(20)){
-			wheels.turnRight(128);
-			wheels.turnRight(128);
-		}
+		delay(250);
+		wheels.stop();
 	}
 }
