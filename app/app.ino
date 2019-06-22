@@ -19,51 +19,45 @@ void loop() {
 /* 	if(eyeRight.isBlocked(20) == false){
 		wheels.turnRight(128);
 		delay(250);
-		wheels.stop();
+		
 	}
 	
 	if(eyeFront.isBlocked(20) == false) {
 		wheels.advance(128);
 		delay(500);
-		wheels.stop();
+		
 	} else {
 		wheels.turnLeft(128);
 		delay(250);
-		wheels.stop();
+		
 	}
  */
 		if(heading == 360 || heading == -360){
 			heading = 0;
 		}
 		
-		if(turnCount == 0 && heading == 0 && eyeFront.isBlocked(20) == false){
+		if(turnCount == 0 && heading == 0 && eyeFront.isBlocked(15) == false){
 			wheels.advance(128);
-			delay(500);
-			wheels.stop();
+			delay(1000);
+			
 		} else {
 			wallFollow();
 		}
 	}
-}
 
 void wallFollow(){
-		if(eyeRight.isBlocked(20) == false){
+		if(eyeRight.isBlocked(15) == false){
 			turnCount++;
 			heading += 90;
-			wheels.turnRight(128);
-			delay(250);
-			wheels.stop();
+			wheels.turnRight(255);
 		}
 		
 		if(eyeFront.isBlocked(20) == false){
 			wheels.advance(128);
-			delay(500);
-			wheels.stop();
+			delay(1000);
 		} else {
 			turnCount--;
 			heading -= 90;
-			wheels.turnLeft(128);
-			delay(250);
-			wheels.stop();
+			wheels.turnLeft(255);
 		}
 }
